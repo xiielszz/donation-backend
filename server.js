@@ -8,34 +8,36 @@ app.use(express.json());
 
 let donations = [];
 
-app.post("/donate", (req, res) => {
+// webhook socialbuzz
+app.post("/webhook", (req, res) => {
+
+  const body = req.body;
 
   const data = {
-    name: req.body.name || "Anonim",
-    amount: req.body.amount || 0,
-    message: req.body.message || ""
+    name: body.name || "Anonim",
+    amount: body.amount || 0,
+    message: body.message || ""
   };
 
   donations.push(data);
 
-  console.log(data);
+  console.log("Donate masuk:", data);
 
-  res.json({
-    success: true
-  });
+  res.sendStatus(200);
 });
 
+// endpoint Roblox
 app.get("/donations", (req, res) => {
 
   res.json({
-    donations: donations
+    donations
   });
 
   donations = [];
 });
 
 app.get("/", (req, res) => {
-  res.send("Backend Aktif");
+  res.send("SocialBuzz Backend Aktif");
 });
 
 app.listen(process.env.PORT || 3000);
