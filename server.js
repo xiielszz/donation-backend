@@ -8,20 +8,23 @@ app.use(express.json());
 
 let donations = [];
 
-// webhook socialbuzz
+// webhook dari SocialBuzz
 app.post("/webhook", (req, res) => {
+
+  console.log("WEBHOOK MASUK:");
+  console.log(req.body);
 
   const body = req.body;
 
   const data = {
-    name: body.name || "Anonim",
-    amount: body.amount || 0,
-    message: body.message || ""
+    name: body.name || body.username || "Anonim",
+    amount: body.amount || body.nominal || 0,
+    message: body.message || body.msg || ""
   };
 
   donations.push(data);
 
-  console.log("Donate masuk:", data);
+  console.log("DONASI DISIMPAN:", data);
 
   res.sendStatus(200);
 });
@@ -40,4 +43,6 @@ app.get("/", (req, res) => {
   res.send("SocialBuzz Backend Aktif");
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server berjalan");
+});
